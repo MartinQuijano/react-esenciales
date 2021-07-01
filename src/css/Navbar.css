@@ -1,0 +1,64 @@
+.navbar {
+    background-color: #3e5731;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.nav-link:hover {
+    color: white !important;
+}
+
+.dropdown-menu {
+    background-color: #4b643d !important;
+}
+
+.dropdown-menu .dropdown-menu{
+    background-color: #607553 !important;
+}
+
+.dropdown-menu .dropdown-item {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: transparent !important;
+    color: white !important;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    color: #fff;
+    text-decoration: none;
+    background-color: #708664
+}
+
+.button{
+    background-color: #d0e8c2;
+    color: rgba(24, 24, 24, 0.5);
+    margin: 0 auto;
+    display: block;
+}
+
+.button:hover{
+    background-color: #c2fca0;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.formulario{
+    margin: 10px;
+}
+
+.label{
+    color: rgba(255, 255, 255, 0.5) !important; 
+    display: block;
+}
+
+.datepicker{
+    background-color: white;
+}
+
+.dropdown-menu{
+    min-width: 14rem;
+}
