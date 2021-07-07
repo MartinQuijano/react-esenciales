@@ -65,7 +65,7 @@ class NavbarEsenciales extends Component {
 
         return (
             <Navbar expand="lg">
-                <Navbar.Brand href="#home"><img src="/img/logo_esenciales.png" alt="" width="175" /></Navbar.Brand>
+                <Navbar.Brand href="/" onClick={() => this.manejarClickEnBoton(null)}><img src="/img/logo_esenciales.png" alt="" width="175" /></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto">
