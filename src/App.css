@@ -1,3 +1,8 @@
-body {
-    background-color: #e4eee0;
+html, body {
+    background-color: #e6eee4;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
 }
+

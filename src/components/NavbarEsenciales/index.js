@@ -15,9 +15,9 @@ import SimpleColumnTotal from '../Simple-column-total';
 
 
 class NavbarEsenciales extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state = {cantidad: '0', fechaInicio: null, fechaFin: null, categoria: null}
+        this.state = { cantidad: '0', fechaInicio: null, fechaFin: null, categoria: null, categorias: [] }
         this.manejarClickEnBoton = this.manejarClickEnBoton.bind(this);
         this.manejarCambioCantidad = this.manejarCambioCantidad.bind(this);
         this.manejarCambioCategoria = this.manejarCambioCategoria.bind(this);
@@ -25,32 +25,44 @@ class NavbarEsenciales extends Component {
         this.manejarCambioSegundaFecha = this.manejarCambioSegundaFecha.bind(this);
     }
 
-    manejarCambioCantidad(event){
-        this.setState({cantidad: event.target.value});
+    componentDidMount() {
+        fetch('https://esenciales-api-quijano.herokuapp.com/categorias')
+        .then((res) => res.json())
+        .then(
+            (data) => {
+                this.setState({ categorias: data})
+            }
+        );
     }
 
-    manejarCambioCategoria(event){
+    componentWillUnmount() {}
+
+    manejarCambioCantidad(event) {
+        this.setState({ cantidad: event.target.value });
+    }
+
+    manejarCambioCategoria(event) {
         var valueToLowerCase = event.target.value.toLowerCase();
-        if(valueToLowerCase.length === 0){
+        if (valueToLowerCase.length === 0) {
             valueToLowerCase = null;
         }
-        this.setState({categoria: valueToLowerCase});
-    }
-  
-    manejarCambioPrimeraFecha(date){
-        this.setState({fechaInicio: date});
+        this.setState({ categoria: valueToLowerCase });
     }
 
-    manejarCambioSegundaFecha(date){
-        this.setState({fechaFin: date});
+    manejarCambioPrimeraFecha(date) {
+        this.setState({ fechaInicio: date });
     }
 
-    manejarClickEnBoton(componente){
+    manejarCambioSegundaFecha(date) {
+        this.setState({ fechaFin: date });
+    }
+
+    manejarClickEnBoton(componente) {
         this.props.alClickearUnBoton(componente, this.state.cantidad, this.state.fechaInicio, this.state.fechaFin, this.state.categoria);
     }
-
+      
     render() {
-        
+
         return (
             <Navbar expand="lg">
                 <Navbar.Brand href="#home"><img src="/img/logo_esenciales.png" alt="" width="175" /></Navbar.Brand>
@@ -62,19 +74,24 @@ class NavbarEsenciales extends Component {
                             <Form className="formulario">
                                 <Form.Group>
                                     <Form.Label className="label">Cantidad de productos</Form.Label>
-                                    <Form.Control type="text" placeholder="Ingresar cantidad" onChange={this.manejarCambioCantidad}/>
+                                    <Form.Control type="text" placeholder="Ingresar cantidad" onChange={this.manejarCambioCantidad} />
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Label className="label">Categoria</Form.Label>
-                                    <Form.Control type="text" placeholder="Ingresar categoria" onChange={this.manejarCambioCategoria}/>
+                                    <Form.Control as="select" defaultValue="Elegir categoria" onChange={this.manejarCambioCategoria}>
+                                        <option key={''} >{null} </option>
+                                        {this.state.categorias.map((categoria) => (
+                                            <option key={categoria.categoria} >{categoria.categoria} </option>
+                                        ))}
+                                    </Form.Control>
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Label className="label">Fecha inicio</Form.Label>
-                                    <DatePicker className="datepicker" onChange={this.manejarCambioPrimeraFecha} value={this.state.fechaInicio} dateFormat="dd/MM/y"/>
+                                    <DatePicker className="datepicker" onChange={this.manejarCambioPrimeraFecha} value={this.state.fechaInicio} dateFormat="dd/MM/y" />
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Label className="label">Fecha fin</Form.Label>
-                                    <DatePicker className="datepicker" onChange={this.manejarCambioSegundaFecha} value={this.state.fechaFin} dateFormat="dd/MM/y"/>
+                                    <DatePicker className="datepicker" onChange={this.manejarCambioSegundaFecha} value={this.state.fechaFin} dateFormat="dd/MM/y" />
                                 </Form.Group>
                                 <Button className="button" onClick={() => this.manejarClickEnBoton(PieChartProductos)}>
                                     Consultar
@@ -86,15 +103,15 @@ class NavbarEsenciales extends Component {
                                 <Form className="formulario">
                                     <Form.Group>
                                         <Form.Label className="label">Cantidad de categorías</Form.Label>
-                                        <Form.Control type="text" placeholder="Ingresar cantidad" onChange={this.manejarCambioCantidad}/>
+                                        <Form.Control type="text" placeholder="Ingresar cantidad" onChange={this.manejarCambioCantidad} />
                                     </Form.Group>
                                     <Form.Group>
                                         <Form.Label className="label">Fecha inicio</Form.Label>
-                                        <DatePicker className="datepicker" onChange={this.manejarCambioPrimeraFecha} value={this.state.fechaInicio} dateFormat="dd/MM/y"/>
+                                        <DatePicker className="datepicker" onChange={this.manejarCambioPrimeraFecha} value={this.state.fechaInicio} dateFormat="dd/MM/y" />
                                     </Form.Group>
                                     <Form.Group>
                                         <Form.Label className="label">Fecha fin</Form.Label>
-                                        <DatePicker className="datepicker" onChange={this.manejarCambioSegundaFecha} value={this.state.fechaFin} dateFormat="dd/MM/y"/>
+                                        <DatePicker className="datepicker" onChange={this.manejarCambioSegundaFecha} value={this.state.fechaFin} dateFormat="dd/MM/y" />
                                     </Form.Group>
                                     <Button className="button" onClick={() => this.manejarClickEnBoton(PieChartCantidad)}>
                                         Consultar
@@ -105,15 +122,15 @@ class NavbarEsenciales extends Component {
                                 <Form className="formulario">
                                     <Form.Group>
                                         <Form.Label className="label">Cantidad de categorías</Form.Label>
-                                        <Form.Control type="text" placeholder="Ingresar cantidad" onChange={this.manejarCambioCantidad}/>
+                                        <Form.Control type="text" placeholder="Ingresar cantidad" onChange={this.manejarCambioCantidad} />
                                     </Form.Group>
                                     <Form.Group>
                                         <Form.Label className="label">Fecha inicio</Form.Label>
-                                        <DatePicker className="datepicker" onChange={this.manejarCambioPrimeraFecha} value={this.state.fechaInicio} dateFormat="dd/MM/y"/>
+                                        <DatePicker className="datepicker" onChange={this.manejarCambioPrimeraFecha} value={this.state.fechaInicio} dateFormat="dd/MM/y" />
                                     </Form.Group>
                                     <Form.Group>
                                         <Form.Label className="label">Fecha fin</Form.Label>
-                                        <DatePicker className="datepicker" onChange={this.manejarCambioSegundaFecha} value={this.state.fechaFin} dateFormat="dd/MM/y"/>
+                                        <DatePicker className="datepicker" onChange={this.manejarCambioSegundaFecha} value={this.state.fechaFin} dateFormat="dd/MM/y" />
                                     </Form.Group>
                                     <Button className="button" onClick={() => this.manejarClickEnBoton(PieChartIngresos)}>
                                         Consultar
@@ -123,9 +140,9 @@ class NavbarEsenciales extends Component {
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>
-                
+
             </Navbar>
-            
+
         );
     };
 }

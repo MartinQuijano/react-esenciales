@@ -42,12 +42,14 @@ class SimpleColumnTotal extends Component {
                     (data) => {
                         chart.data = data
                     }
+                    
                 );
 
         let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
         categoryAxis.dataFields.category = "fecha";
         categoryAxis.renderer.grid.template.location = 0;
         categoryAxis.renderer.minGridDistance = 30;
+
 
         categoryAxis.renderer.labels.template.adapter.add("dy", function (dy, target) {
             if (target.dataItem && target.dataItem.index & 2 == 2) {
@@ -68,6 +70,8 @@ class SimpleColumnTotal extends Component {
         let columnTemplate = series.columns.template;
         columnTemplate.strokeWidth = 2;
         columnTemplate.strokeOpacity = 1;
+
+        chart.scrollbarX = new am4core.Scrollbar();
         
         if(this.props.dateType !== 'dias'){
             series.columns.template.events.on("hit", function(ev){
@@ -84,6 +88,21 @@ class SimpleColumnTotal extends Component {
             }, this);
         }
         
+        let title = chart.titles.create();
+
+        if(this.props.dateType == null)
+            title.text = 'Ingresos totales';
+        else if(this.props.dateType === 'meses')
+            title.text = 'Ingresos totales del año ' + this.props.añoActual;
+        else if(this.props.dateType === 'dias')
+            title.text = 'Ingresos totales del mes ' + this.props.date + ' del año ' + this.props.añoActual;
+
+        categoryAxis.events.on("sizechanged", function(ev) {
+            let axis = ev.target;
+            let cellWidth = axis.pixelWidth / (axis.endIndex - axis.startIndex);
+            axis.renderer.labels.template.maxWidth = cellWidth;
+            });
+
         this.chart = chart;
     }
 
@@ -100,24 +119,12 @@ class SimpleColumnTotal extends Component {
             return <div><Button className="button" onClick={() => this.manejarClickEnColumnaAño('meses', this.props.añoActual, this.props.añoActual)}>Volver a meses</Button></div>
     }
 
-    renderTitle(){
-        if(this.props.dateType == null)
-            return 'Ingresos totales';
-        else if(this.props.dateType === 'meses')
-            return 'Ingresos totales del año ' + this.props.añoActual;
-        else if(this.props.dateType === 'dias')
-            return 'Ingresos totales del mes ' + this.props.date + ' del año ' + this.props.añoActual;
-    }
-
     render() {
 
         return (
             <>
                 <br></br>
-                <div align="center">
-                    {this.renderTitle()}
-                </div>
-                <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
+                <div id="chartdiv" ></div>
                 { this.renderButton() }
                 
             </>

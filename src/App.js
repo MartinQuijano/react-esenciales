@@ -1,11 +1,11 @@
-import './App.css';
 import Container from './components/Container';
+import './App.css';
 
 function App() {
 
   return ( 
     <>
-      <Container />
+      <Container className="container"/>
     </>
   );
 }
